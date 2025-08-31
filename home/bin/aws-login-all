@@ -1,0 +1,63 @@
+#!/bin/bash
+
+function main() {
+  load_os_environments || return 1
+  prepare_directory || return 1
+  do_login
+}
+
+function load_os_environments() {
+  local os="$(uname -s)"
+
+  case "${os}" in
+    Darwin*)
+      [ -z "${XDG_CONFIG_HOME}" ] && local XDG_CONFIG_HOME="${HOME}/Library/Application Support"
+      [ -z "${XDG_CACHE_HOME}" ] && local XDG_CACHE_HOME="${HOME}/Library/Caches"
+      ;;
+    Linux*)
+      [ -z "${XDG_CONFIG_HOME}" ] && local XDG_CONFIG_HOME="${HOME}/.config"
+      [ -z "${XDG_CACHE_HOME}" ] && local XDG_CACHE_HOME="${HOME}/.cache"
+      ;;
+    *)
+      echo "Unsupported OS: ${os}"
+      exit 1
+      ;;
+  esac
+
+  readonly CONFIG_DIR="${XDG_CONFIG_HOME}/awsctx"
+  readonly CACHE_DIR="${XDG_CACHE_HOME}/awsctx"
+}
+
+function prepare_directory() {
+  mkdir -p "${CONFIG_DIR}" "${CACHE_DIR}" || return 1
+}
+
+function do_login() {
+  local saml_cache list_roles role
+  local child_pids=()
+  local child_error="false"
+
+  saml_cache="$(mktemp)" || return 1
+  trap "rm ${saml_cache}" EXIT
+
+  if [ -z "${SAML2AWS_PASSWORD}" ]; then
+    read -s -p "Password: " SAML2AWS_PASSWORD; export SAML2AWS_PASSWORD; echo
+  fi
+  read -p "OTP: " SAML2AWS_MFA_TOKEN; export SAML2AWS_MFA_TOKEN
+
+  list_roles="$(saml2aws --disable-keychain --skip-prompt list-roles --cache-saml --cache-file "${saml_cache}")" || return 2
+
+  for role in $(echo "${list_roles}" | tail -n+2); do
+    local role_name="${role##*/}"
+    saml2aws --disable-keychain --skip-prompt login --force --role "${role}" --session-duration 43200 --cache-saml --cache-file "${saml_cache}" --credentials-file "${CACHE_DIR}/${role_name}.credentials" >/dev/null &
+    child_pids+=($!)
+  done
+
+  for pid in "${child_pids[@]}"; do
+    wait "${pid}" || child_error="true"
+  done
+
+  test "${child_error}" == "true" && return 3 || return 0
+}
+
+main "$@"
