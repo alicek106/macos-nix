@@ -116,8 +116,8 @@ in {
   
       # AWS 프로파일
       aws = {
-        symbol = "☁️ ";
         style = "yellow";
+        format = "☁️ [$profile]($style) "; # 시간 부분을 아예 제거
       };
   
       time = {
@@ -147,6 +147,7 @@ in {
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
+      url."git@github.com:".insteadOf = "https://github.com/";
     };
     ignores = [ ".DS_Store" ".direnv" "result" ];
   };
