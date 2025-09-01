@@ -104,7 +104,7 @@ in {
       };
 
       git_status = {
-        format = "([$all_status]($style))";
+        format = "([$ahead_behind$all_status]($style))";
         ahead = "⇡";    # 원격보다 커밋이 앞설 때
         behind = "⇣";   # 원격보다 뒤쳐졌을 때
         diverged = "⇕";
