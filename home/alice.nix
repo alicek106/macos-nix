@@ -105,7 +105,14 @@ in {
 
       git_status = {
         format = "([$modified]($style))";
-        modified = "*";
+        ahead = "⇡";    # 원격보다 커밋이 앞설 때
+        behind = "⇣";   # 원격보다 뒤쳐졌을 때
+        diverged = "⇕";
+        modified = "*"; # 수정사항 있으면 빨간 별만
+        staged = "+";   # staged 변경사항
+        untracked = "?";
+        deleted = "x";
+        stashed = "$";
         style = "red bold";
       };
 
