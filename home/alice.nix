@@ -95,16 +95,16 @@ in {
     settings = {
       # 전체 포맷 정의
       format = ''
-        $kubernetes $directory $git_branch $git_status  $aws $time
+        $kubernetes $directory $git_branch$git_status$aws $time
         $character
       '';
 
       git_branch = {
-        format = "[$branch]($style)";
+        format = "[$branch]($style) ";
       };
 
       git_status = {
-        format = "([$ahead_behind$all_status]($style))";
+        format = "([$ahead_behind$all_status]($style))  ";
         ahead = "⇡";    # 원격보다 커밋이 앞설 때
         behind = "⇣";   # 원격보다 뒤쳐졌을 때
         diverged = "⇕";
