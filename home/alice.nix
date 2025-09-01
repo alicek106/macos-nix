@@ -104,7 +104,7 @@ in {
       };
 
       git_status = {
-        format = "([$ahead_behind$all_status]($style))  ";
+        format = "([$ahead_behind$all_status]($style)) ";
         ahead = "⇡";    # 원격보다 커밋이 앞설 때
         behind = "⇣";   # 원격보다 뒤쳐졌을 때
         diverged = "⇕";
@@ -134,7 +134,7 @@ in {
       # AWS 프로파일
       aws = {
         style = "yellow";
-        format = "☁️ [$profile]($style) "; # 시간 부분을 아예 제거
+        format = ''\[☁️ [$profile]($style)\] '';
       };
   
       time = {
