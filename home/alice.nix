@@ -98,7 +98,17 @@ in {
         $kubernetes $directory $git_branch $git_status  $aws $time
         $character
       '';
-  
+
+      git_branch = {
+        format = "[$branch]($style)";
+      };
+
+      git_status = {
+        format = "([$modified]($style))";
+        modified = "*";
+        style = "red bold";
+      };
+
       # Kubernetes 모듈
       kubernetes = {
         disabled = false;
