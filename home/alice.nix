@@ -95,7 +95,7 @@ in {
     settings = {
       # 전체 포맷 정의
       format = ''
-        $kubernetes $directory $aws $time
+        $kubernetes $directory $git_branch $git_status  $aws $time
         $character
       '';
   
