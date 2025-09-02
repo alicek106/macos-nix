@@ -10,7 +10,7 @@ let
     coreutils-full findutils gawk gnused
     curl kubectl terraform
     direnv nix-direnv nix-index nixpkgs-fmt nil
-    colima docker docker-compose awscli saml2aws kubectx wireguard-tools
+    colima docker docker-compose awscli saml2aws kubectx wireguard-tools watch claude-code htop
   ];
 
   guiApps = with pkgs; [
@@ -20,6 +20,7 @@ let
     google-chrome
     jetbrains.goland
     rectangle
+    libreoffice-bin
   ];
 
   maccy = appUtils {

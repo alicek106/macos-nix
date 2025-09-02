@@ -28,6 +28,7 @@ in {
       VAULT_ADDR = "https://vault.devsisters.cloud";
       AWS_SDK_LOAD_CONFIG = "true";
       AWS_PROFILE = "saml";
+      KUBE_EDITOR = "vim";
     };
 
     # alias 모음
@@ -165,6 +166,7 @@ in {
       pull.rebase = true;
       push.autoSetupRemote = true;
       url."git@github.com:".insteadOf = "https://github.com/";
+      core.editor = "vim";
     };
     ignores = [ ".DS_Store" ".direnv" "result" ];
   };
