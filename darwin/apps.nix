@@ -32,6 +32,15 @@ let
     };
   };
 
+  keepingYouAwake = appUtils {
+    pname = "KeepingYouAwake";
+    version = "1.6.7";
+    src = pkgs.fetchurl {
+      url = "https://github.com/newmarcel/KeepingYouAwake/releases/download/1.6.7/KeepingYouAwake-1.6.7.zip";
+      sha256 = "sha256:fd8db2ec536f3fb02607bbc17be1a86b173a9f72331351eb076a63329cc5d915";
+    };
+  };
+
 /*
   wireguard = appUtils {
     pname = "wireguard";
@@ -45,6 +54,7 @@ let
 
   customApps = [
     maccy
+    keepingYouAwake
     # wireguard
   ];
 
