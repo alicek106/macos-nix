@@ -10,7 +10,7 @@ let
     coreutils-full findutils gawk gnused
     curl kubectl terraform
     direnv nix-direnv nix-index nixpkgs-fmt nil
-    colima docker docker-compose awscli saml2aws kubectx wireguard-tools watch claude-code htop redis
+    colima docker docker-compose awscli saml2aws kubectx wireguard-tools watch claude-code htop redis golangci-lint
   ];
 
   guiApps = with pkgs; [
