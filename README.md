@@ -11,3 +11,6 @@
 - `saml2aws configure`
   - url: `https://auth.<..>.cloud/auth/realms/devsisters/protocol/saml/clients/amazon-aws`
 - awsctx 내려받고 bash로 install (`git clone git@github.com:<...>/awsctx.git / ./install.sh profiles`)
+
+# TODO
+- MacOS에 NixOS 설치해서 full nix 세팅 만들기
