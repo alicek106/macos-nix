@@ -60,6 +60,10 @@ in {
       orientation = "bottom";
       show-recents = false;
       persistent-apps = dockApps;
+      wvous-tl-corner = 1;
+      wvous-tr-corner = 1;
+      wvous-bl-corner = 1;
+      wvous-br-corner = 1;
     };
 
     finder = {
