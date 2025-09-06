@@ -113,7 +113,6 @@ in {
         staged = "+";   # staged 변경사항
         untracked = "?";
         deleted = "x";
-        stashed = "$";
         style = "red bold";
       };
 
