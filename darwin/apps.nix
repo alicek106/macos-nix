@@ -6,11 +6,21 @@ let
   oldGoPkgs = import inputs.pkgs_go_1_24_2 { inherit system; };
 
   cliTools = with pkgs; [
+    # basics
     git jq ripgrep fd bat eza tree wget unzip gnupg
     coreutils-full findutils gawk gnused
-    curl kubectl terraform
-    direnv nix-direnv nix-index nixpkgs-fmt nil
-    colima docker docker-compose awscli saml2aws kubectx wireguard-tools watch claude-code htop redis golangci-lint
+    direnv nix-direnv nix-index nixpkgs-fmt nil watch 
+
+    # dev-tools 
+    openjdk21 curl kubectl terraform
+    colima docker docker-compose awscli kubectx
+    claude-code htop redis golangci-lint
+
+    # devsisters
+    vault wireguard-tools saml2aws
+
+    # manu bar
+    joplin-desktop stats ice-bar rectangle
   ];
 
   guiApps = with pkgs; [
@@ -19,7 +29,6 @@ let
     slack
     google-chrome
     jetbrains.goland
-    rectangle
     libreoffice-bin
   ];
 
@@ -41,21 +50,9 @@ let
     };
   };
 
-/*
-  wireguard = appUtils {
-    pname = "wireguard";
-    version = "1.0.16";
-    src = pkgs.fetchurl {
-      url = "https://github.com/vaardan/wireguard-macos-app/releases/download/v1.0.16/wireguard_1_0_16.zip";
-      sha256 = "sha256:0xgddc7wzh5d2qbj1k10db7s8a6ljs2lq6lca16id4drsnvym16z";
-    };
-  };
-*/
-
   customApps = [
     maccy
     keepingYouAwake
-    # wireguard
   ];
 
   languages = {

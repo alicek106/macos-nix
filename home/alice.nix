@@ -8,6 +8,11 @@ in {
   home.homeDirectory = "/Users/alicek106";
   home.stateVersion = "24.05";
 
+  programs.eza = {
+    enable = true;
+    enableBashIntegration = true;
+  };
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -96,9 +101,11 @@ in {
     settings = {
       # 전체 포맷 정의
       format = ''
-        $kubernetes $directory $git_branch$git_status$aws $time
+        $kubernetes $directory $git_branch$git_status$aws
         $character
       '';
+
+      right_format = "$time";
 
       git_branch = {
         format = "[$branch]($style) ";
