@@ -61,6 +61,8 @@ in {
 
       # git
       gst = "git status";
+      gs = "git switch";
+      gp = "git pull origin";
     };
 
     # 직접 지원하지 않는 옵션들만 initExtra에 작성

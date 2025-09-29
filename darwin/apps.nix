@@ -29,6 +29,7 @@ let
     slack
     google-chrome
     jetbrains.goland
+    jetbrains.datagrip
     libreoffice-bin
   ];
 
