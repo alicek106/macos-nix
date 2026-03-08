@@ -1,6 +1,11 @@
 { config, pkgs, lib, username, hostname, system, ... }:
 
 {
+  services.tailscale = {
+    enable = true;
+    package = pkgs.tailscale;
+  };
+
   # nixpkgs & nix 전역 설정
   nixpkgs.hostPlatform = system;
   nixpkgs.config.allowUnfree = true;

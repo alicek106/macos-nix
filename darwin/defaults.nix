@@ -9,8 +9,7 @@ let
     { pkg = pkgs.iterm2;         app = "iTerm2.app"; }
     { pkg = pkgs.vscode;         app = "Visual Studio Code.app"; }
     { pkg = pkgs.slack;          app = "Slack.app"; }
-    { pkg = pkgs.google-chrome;  app = "Google Chrome.app"; }
-    { pkg = pkgs.jetbrains.goland;  app = "GoLand.app"; }
+    # { pkg = pkgs.google-chrome;  app = "Google Chrome.app"; }
     # { pkg = pkgs.firefox;      app = "Firefox.app"; }  # 예: 추가하고 싶으면 이렇게
   ];
 

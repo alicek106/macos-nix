@@ -10,6 +10,7 @@
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     pkgs_go_1_24_2.url = "github:NixOS/nixpkgs/eaeed9530c76ce5f1d2d8232e08bec5e26f18ec1";
+    claude-code.url = "github:sadjow/claude-code-nix";
   };
 
   outputs = inputs@{ self, nixpkgs, darwin, home-manager, nix-index-database, ... }:

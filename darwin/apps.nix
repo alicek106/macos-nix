@@ -5,31 +5,42 @@ let
 
   oldGoPkgs = import inputs.pkgs_go_1_24_2 { inherit system; };
 
+  unstablePkgs = import inputs.nixpkgs { 
+    inherit system;
+    config.allowUnfree = true;
+  };
+
   cliTools = with pkgs; [
     # basics
     git jq ripgrep fd bat eza tree wget unzip gnupg
     coreutils-full findutils gawk gnused
-    direnv nix-direnv nix-index nixpkgs-fmt nil watch 
+    nix-direnv nix-index nixpkgs-fmt nil watch 
 
     # dev-tools 
-    openjdk21 curl kubectl terraform
-    colima docker docker-compose awscli kubectx
-    claude-code htop redis golangci-lint
+    openjdk21 curl kubectl kubectl-view-secret tfswitch kubernetes-helm
+    colima docker docker-compose awscli kubectx google-cloud-sdk
+    htop redis golangci-lint uv grpcui grpcurl tailscale stuntman istioctl postgresql_17_jit ffmpeg ngrok jwt-cli
 
     # devsisters
     vault wireguard-tools saml2aws
 
     # manu bar
     joplin-desktop stats ice-bar rectangle
+
+    python312
+    python312Packages.pip
+    pkgconf openssl
+
+    rust-analyzer
+    inputs.claude-code.packages.${system}.default
+
   ];
 
   guiApps = with pkgs; [
     iterm2
     vscode
     slack
-    google-chrome
-    jetbrains.goland
-    jetbrains.datagrip
+    # google-chrome # chrome은 enpass 플러그인 의존성으로 인해 직접 설치
     libreoffice-bin
   ];
 

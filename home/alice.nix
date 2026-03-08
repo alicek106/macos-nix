@@ -50,9 +50,9 @@ in {
       ka = "kubectl apply -f";
       kx = "kubectx";
       kvs = "kubectl view-secret";
-      kkill = "kubectl delete po --force --grace-period 0";
+      kkill = "kubectl delete po --grace-period 0";
       kport = "kubectl port-forward";
-      kgno = "kubectl get nodes -L beta.kubernetes.io/instance-type,aws/instance-group,aws/instance-id,karpenter.sh/nodepool,devsisters.cloud/application --sort-by=.metadata.creationTimestamp";
+      kgno = "kubectl get nodes -L beta.kubernetes.io/instance-type,aws/instance-group,aws/instance-id,karpenter.sh/nodepool,devsisters.cloud/application,karpenter.sh/capacity-type --sort-by=.metadata.creationTimestamp";
 
       # terraform
       tws = "terraform workspace select";
@@ -80,9 +80,7 @@ in {
       bindkey "^[^[[C" forward-word
       bindkey "^[^[[D" backward-word
 
-      # direnv, zoxide, starship
-      eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
-      eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
+      # starship
       eval "$(${pkgs.starship}/bin/starship init zsh)"
 
       # zinit으로만 설치 가능한 플러그인들
@@ -95,6 +93,15 @@ in {
 
       source ~/dotfiles/home/script/awsctx.sh
       awsctx infra
+
+      alias vaultctx=~/.vaultctx/script
+      
+      function load_vault_envs() {
+        export VAULT_ADDR=$(vaultctx get-addr)
+      }
+      
+      typeset -a precmd_functions
+      precmd_functions+=(load_vault_envs)
     '';
   };
 
@@ -162,7 +169,6 @@ in {
     };
   };
   
-  programs.zoxide.enable = true;
   programs.fzf.enable = true;
 
   programs.git = {
@@ -177,6 +183,11 @@ in {
       core.editor = "vim";
     };
     ignores = [ ".DS_Store" ".direnv" "result" ];
+  };
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
   };
 
   programs.neovim = {
@@ -278,5 +289,6 @@ in {
 
   home.sessionPath = [
     "${config.home.homeDirectory}/dotfiles/home/bin"
+    "${config.home.homeDirectory}/bin"
   ];
 }
