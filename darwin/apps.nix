@@ -18,8 +18,10 @@ let
 
     # dev-tools 
     openjdk21 curl kubectl kubectl-view-secret tfswitch kubernetes-helm
-    colima docker docker-compose awscli kubectx google-cloud-sdk
+    docker docker-compose awscli kubectx (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
     htop redis golangci-lint uv grpcui grpcurl tailscale stuntman istioctl postgresql_17_jit ffmpeg ngrok jwt-cli
+    teleport_17
+    kubeseal
 
     # devsisters
     vault wireguard-tools saml2aws
