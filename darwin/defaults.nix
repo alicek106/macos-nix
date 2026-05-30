@@ -1,4 +1,4 @@
-{ config, pkgs, lib, username, ... }:
+{ pkgs, lib, username, ... }:
 
 let
   # Nix 앱 링크를 만들 위치
@@ -6,9 +6,9 @@ let
 
   # 관리할 앱 목록 (여기 한 줄씩만 추가하면 symlink + Dock 자동 반영)
   nixApps = [
-    { pkg = pkgs.iterm2;         app = "iTerm2.app"; }
-    { pkg = pkgs.vscode;         app = "Visual Studio Code.app"; }
-    { pkg = pkgs.slack;          app = "Slack.app"; }
+    { pkg = pkgs.iterm2; app = "iTerm2.app"; }
+    { pkg = pkgs.vscode; app = "Visual Studio Code.app"; }
+    { pkg = pkgs.slack; app = "Slack.app"; }
     # { pkg = pkgs.google-chrome;  app = "Google Chrome.app"; }
     # { pkg = pkgs.firefox;      app = "Firefox.app"; }  # 예: 추가하고 싶으면 이렇게
   ];
@@ -18,11 +18,14 @@ let
 
   # symlink 생성 스크립트
   mkLinks = lib.concatStringsSep "\n" (
-    map (a: ''
-      ln -sfn "${a.pkg}/Applications/${a.app}" "${userApps}/${a.app}"
-    '') nixApps
+    map
+      (a: ''
+        ln -sfn "${a.pkg}/Applications/${a.app}" "${userApps}/${a.app}"
+      '')
+      nixApps
   );
-in {
+in
+{
   # macOS 기본 설정 (키보드, 트랙패드, Dock, Finder 등)
   system.defaults = {
     NSGlobalDomain = {
@@ -36,11 +39,11 @@ in {
       "com.apple.mouse.tapBehavior" = 1;
 
       NSAutomaticSpellingCorrectionEnabled = false;
-      NSAutomaticCapitalizationEnabled     = false;
+      NSAutomaticCapitalizationEnabled = false;
       NSAutomaticPeriodSubstitutionEnabled = false;
-      NSAutomaticQuoteSubstitutionEnabled  = false;
-      NSAutomaticDashSubstitutionEnabled   = false;
-      NSAutomaticInlinePredictionEnabled   = false;
+      NSAutomaticQuoteSubstitutionEnabled = false;
+      NSAutomaticDashSubstitutionEnabled = false;
+      NSAutomaticInlinePredictionEnabled = false;
     };
 
     trackpad = {

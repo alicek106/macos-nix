@@ -1,9 +1,22 @@
 { config, pkgs, lib, ... }:
 
 let
-  itermCustomDir = "${config.home.homeDirectory}/.config/iterm2-nix";   # iTerm2가 읽을 폴더
-  srcPlist       = ./iterm2/com.googlecode.iterm2.plist;                # 기존 맥에서 복사
-in {
+  itermCustomDir = "${config.home.homeDirectory}/.config/iterm2-nix"; # iTerm2가 읽을 폴더
+  srcPlist = ./iterm2/com.googlecode.iterm2.plist; # 기존 맥에서 복사
+
+  # nvim 디버깅용 codelldb (rustaceanvim 의 dap 어댑터로 사용)
+  codelldb = pkgs.vscode-extensions.vadimcn.vscode-lldb;
+  codelldbDir = "${codelldb}/share/vscode/extensions/vadimcn.vscode-lldb";
+
+  # nix store 경로를 lua 로 노출 (rust.lua 가 require("nix_paths") 로 읽음)
+  nvimNixPaths = ''
+    return {
+      codelldb = "${codelldbDir}/adapter/codelldb",
+      liblldb = "${codelldbDir}/lldb/lib/liblldb.dylib",
+    }
+  '';
+in
+{
   home.username = "alicek106";
   home.homeDirectory = "/Users/alicek106";
   home.stateVersion = "24.05";
@@ -57,7 +70,7 @@ in {
       # terraform
       tws = "terraform workspace select";
       twl = "terraform workspace list";
-      tf  = "terraform";
+      tf = "terraform";
 
       # git
       gst = "git status";
@@ -122,11 +135,11 @@ in {
 
       git_status = {
         format = "([$ahead_behind$all_status]($style)) ";
-        ahead = "⇡";    # 원격보다 커밋이 앞설 때
-        behind = "⇣";   # 원격보다 뒤쳐졌을 때
+        ahead = "⇡"; # 원격보다 커밋이 앞설 때
+        behind = "⇣"; # 원격보다 뒤쳐졌을 때
         diverged = "⇕";
         modified = "*"; # 수정사항 있으면 빨간 별만
-        staged = "+";   # staged 변경사항
+        staged = "+"; # staged 변경사항
         untracked = "?";
         deleted = "x";
         style = "red bold";
@@ -138,7 +151,7 @@ in {
         symbol = "☸️ ";
         format = "[$symbol$context( \\($namespace\\))]($style) ";
       };
-  
+
       # 디렉토리 전체 경로
       directory = {
         style = "cyan";
@@ -146,34 +159,34 @@ in {
         truncation_length = 0; # 풀 경로
         format = "[$path]($style) ";
       };
-  
+
       # AWS 프로파일
       aws = {
         style = "yellow";
         format = ''\[☁️ [$profile]($style)\] '';
       };
-  
+
       time = {
         disabled = false;
         format = "[$time]($style) ";
-        time_format = "%r";      # 12시간제 HH:MM:SS AM/PM
+        time_format = "%r"; # 12시간제 HH:MM:SS AM/PM
         style = "bold green";
       };
 
       cmd_duration = {
-        min_time = 500;          # 0.5초 이상만 표시
+        min_time = 500; # 0.5초 이상만 표시
         format = "took [$duration]($style) ";
         style = "bold red";
         show_milliseconds = true;
       };
     };
   };
-  
+
   programs.fzf.enable = true;
 
   programs.git = {
     enable = true;
-    userName  = "alicek106";           # 필요시 수정
+    userName = "alicek106"; # 필요시 수정
     userEmail = "alice_k106@naver.com"; # 필요시 수정
     extraConfig = {
       init.defaultBranch = "main";
@@ -196,24 +209,67 @@ in {
     vimAlias = true;
     withNodeJs = true;
     withPython3 = true;
-  
+
     # 플러그인: vim-plug → nixpkgs.vimPlugins
     plugins = with pkgs.vimPlugins; [
+      # 기존 구성
       typescript-vim
       nerdtree
       vim-mundo
       vim-terraform
       vim-lastplace
       vim-sensible
-      vim-airline
-      vim-airline-themes
       vim-yaml
       fzf-vim
       vim-jsonnet
       vim-go
       vim-helm
+      nvim-scrollbar
+
+      # UI 현대화
+      lualine-nvim # 상태바 (vim-airline 대체)
+      nvim-web-devicons
+      tokyonight-nvim # 다크 테마
+      gitsigns-nvim # git 거터
+      nvim-autopairs
+      indent-blankline-nvim
+      (nvim-treesitter.withPlugins (p: with p; [
+        rust
+        toml
+        lua
+        json
+        yaml
+        bash
+        markdown
+        markdown_inline
+        vimdoc
+      ]))
+
+      # Rust LSP / 자동완성
+      rustaceanvim
+      nvim-cmp
+      cmp-nvim-lsp
+      cmp-buffer
+      cmp-path
+      luasnip
+      cmp_luasnip
+      friendly-snippets
+
+      # 탐색 / 의존성 / 디버깅
+      telescope-nvim
+      plenary-nvim
+      crates-nvim
+      nvim-dap
+      nvim-dap-ui
+      nvim-nio
     ];
-  
+
+    extraLuaConfig = ''
+      require("scrollbar").setup()
+      require("ui")
+      require("rust")
+    '';
+
     extraConfig = ''
       " === 기본 설정 ===
       let mapleader = ","
@@ -222,6 +278,7 @@ in {
       set incsearch
       set noswapfile
       set clipboard=unnamed
+      set termguicolors  " treesitter/테마/scrollbar 렌더링에 필요
       set bg=dark
       set nu
       set smartindent
@@ -233,7 +290,6 @@ in {
       filetype indent plugin on
   
       " === 플러그인 관련 ===
-      let g:airline_powerline_fonts = 1
       let g:terraform_fmt_on_save = 1
       let python_version_3 = 1
       let python_highlight_all = 1
@@ -263,14 +319,17 @@ in {
       " Mundo shortcut
       nnoremap <silent> <Leader>h :MundoToggle<CR>
   
-      " Comment 색상
-      hi Comment ctermfg=DarkGray
       set undodir=~/.vim/undodir
       set undofile
       set mouse=
     '';
   };
   home.file.".vim/undodir/.keep".text = "";
+
+  # neovim lua 모듈 (init.lua 에서 require("ui")/require("rust") 로 로드)
+  home.file.".config/nvim/lua/ui.lua".source = ./nvim/ui.lua;
+  home.file.".config/nvim/lua/rust.lua".source = ./nvim/rust.lua;
+  home.file.".config/nvim/lua/nix_paths.lua".text = nvimNixPaths;
 
   # iTerm2 설정: 커스텀 폴더에 plist/프로필을 배치하고 그 폴더를 쓰도록 강제
   home.activation.iterm2Prefs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

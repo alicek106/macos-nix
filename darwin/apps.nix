@@ -1,41 +1,81 @@
-{ config, pkgs, lib, inputs, system, ... }:
+{ pkgs, inputs, system, ... }:
 
 let
   appUtils = import ./utils.nix { inherit pkgs; };
 
   oldGoPkgs = import inputs.pkgs_go_1_24_2 { inherit system; };
 
-  unstablePkgs = import inputs.nixpkgs { 
-    inherit system;
-    config.allowUnfree = true;
-  };
-
   cliTools = with pkgs; [
     # basics
-    git jq ripgrep fd bat eza tree wget unzip gnupg
-    coreutils-full findutils gawk gnused
-    nix-direnv nix-index nixpkgs-fmt nil watch 
+    git
+    jq
+    ripgrep
+    fd
+    bat
+    eza
+    tree
+    wget
+    unzip
+    gnupg
+    coreutils-full
+    findutils
+    gawk
+    gnused
+    nix-direnv
+    nix-index
+    nixpkgs-fmt
+    nil
+    watch
 
-    # dev-tools 
-    openjdk21 curl kubectl kubectl-view-secret tfswitch kubernetes-helm
-    docker docker-compose awscli kubectx (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
-    htop redis golangci-lint uv grpcui grpcurl tailscale stuntman istioctl postgresql_17_jit ffmpeg ngrok jwt-cli
+    # dev-tools
+    openjdk21
+    curl
+    kubectl
+    kubectl-view-secret
+    kubernetes-helm
+    kubectx
+    docker
+    docker-compose
+    awscli
+    (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
+    htop
+    redis
+    golangci-lint
+    uv
+    grpcui
+    grpcurl
+    tailscale
+    stuntman
+    istioctl
+    postgresql_17_jit
+    ffmpeg
+    ngrok
+    jwt-cli
     teleport_17
     kubeseal
-
-    # devsisters
-    vault wireguard-tools saml2aws
-
-    # manu bar
-    joplin-desktop stats ice-bar rectangle
-
+    nodejs_24
+    codex
+    terminal-notifier
     python312
     python312Packages.pip
-    pkgconf openssl
-
+    pkgconf
+    openssl
     rust-analyzer
+    mysql-shell
+    k3d
+    gh
     inputs.claude-code.packages.${system}.default
 
+    # devsisters
+    vault
+    wireguard-tools
+    saml2aws
+
+    # menu bar
+    joplin-desktop
+    stats
+    ice-bar
+    rectangle
   ];
 
   guiApps = with pkgs; [
@@ -69,13 +109,8 @@ let
     keepingYouAwake
   ];
 
-  languages = {
-    go = [
-      oldGoPkgs.go
-    ];
-  };
-
-in {
+in
+{
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages =
@@ -86,6 +121,7 @@ in {
 
   fonts.packages = with pkgs; [
     jetbrains-mono
+    nerd-fonts.jetbrains-mono # neovim 상태바/아이콘용 글리프 (iTerm 폰트로 지정 필요)
     d2coding
   ];
 }

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "Bash(nix eval:*)",
+      "Bash(claude:*)",
+      "Bash(nix flake *)",
+      "Bash(nixpkgs-fmt flake.nix darwin/apps.nix darwin/defaults.nix darwin/system.nix darwin/utils.nix home/alice.nix)",
+      "Read(//private/tmp/**)",
+      "Bash(yes)",
+      "Bash(nvim --headless -c 'set termguicolors?' -c 'lua print\\(\"scrollbar_loaded=\" .. tostring\\(pcall\\(require, \"scrollbar\"\\)\\)\\)' -c 'q' sb_test.txt)",
+      "Bash(nvim --headless -c 'lua require\\(\"scrollbar\"\\).setup\\(\\)' -c 'hi ScrollbarHandle' -c 'q' sb_test.txt)",
+      "Bash(nvim --headless -c 'set termguicolors' -c 'lua require\\(\"scrollbar\"\\).setup\\(\\)' -c 'normal! G' -c 'lua vim.cmd\\(\"doautocmd WinScrolled\"\\)' -c 'lua local ns=vim.api.nvim_get_namespaces\\(\\); local total=0; for name,id in pairs\\(ns\\) do if name:match\\(\"[Ss]crollbar\"\\) then local m=vim.api.nvim_buf_get_extmarks\\(0,id,0,-1,{}\\); total=total+#m; print\\(name..\" marks=\"..#m\\) end end; print\\(\"total_scrollbar_marks=\"..total\\)' -c 'q' sb_test.txt)",
+      "Bash(rm -f sb_test.txt)",
+      "Read(//Users/alicek106/.vscode/**)",
+      "Read(//Users/alicek106/working/eclairs/.vscode/**)",
+      "Read(//Users/alicek106/.vscode/extensions/**)",
+      "Bash(git add *)",
+      "Bash(nix build *)"
+    ]
+  }
+}
