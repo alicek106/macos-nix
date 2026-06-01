@@ -44,6 +44,34 @@ require("nvim-autopairs").setup({})
 -- 들여쓰기 가이드 라인
 require("ibl").setup()
 
+-- 코드 접기 (nvim-ufo) ── IntelliJ 식 collapse
+-- yaml 등 모든 파일에서 treesitter 구조 기반 접기, 안 되면 indent 로 폴백
+vim.o.foldcolumn = "1" -- gutter 에 접기 표시(−/+)
+vim.o.foldlevel = 99 -- 처음엔 전부 펼친 상태
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+-- gutter 폴드 마커: 펼침 "-", 접힘 "+"
+vim.opt.fillchars:append({ foldopen = "-", foldclose = "+", foldsep = " " })
+
+require("ufo").setup({
+  provider_selector = function(_, _, _)
+    return { "treesitter", "indent" }
+  end,
+})
+
+local ufo = require("ufo")
+local fmap = vim.keymap.set
+fmap("n", "zR", ufo.openAllFolds, { desc = "모든 폴드 펼치기" })
+fmap("n", "zM", ufo.closeAllFolds, { desc = "모든 폴드 접기" })
+fmap("n", "zr", ufo.openFoldsExceptKinds, { desc = "한 단계 펼치기" })
+fmap("n", "zm", ufo.closeFoldsWith, { desc = "한 단계 접기" })
+fmap("n", "zp", function()
+  -- 접힌 내용 미리보기 (IntelliJ 의 fold preview)
+  if not ufo.peekFoldedLinesUnderCursor() then
+    vim.lsp.buf.hover()
+  end
+end, { desc = "접힌 내용 미리보기" })
+
 -- Telescope: 퍼지 파인더 (Find Usages / Go to Symbol / Search Everywhere 대응)
 local telescope = require("telescope")
 telescope.setup({

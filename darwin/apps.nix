@@ -31,6 +31,7 @@ let
     openjdk21
     curl
     kubectl
+    krew
     kubectl-view-secret
     kubernetes-helm
     kubectx

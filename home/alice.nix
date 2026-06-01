@@ -21,6 +21,15 @@ in
   home.homeDirectory = "/Users/alicek106";
   home.stateVersion = "24.05";
 
+  # nixpkgs krew는 `krew` 이름으로만 설치돼 kubectl이 플러그인으로 인식 못 함.
+  # `kubectl krew` 로 쓰기 위해 nix krew를 가리키는 kubectl-krew 심볼릭 링크를 PATH에 노출.
+  home.packages = [
+    (pkgs.runCommand "kubectl-krew" { } ''
+      mkdir -p $out/bin
+      ln -s ${pkgs.krew}/bin/krew $out/bin/kubectl-krew
+    '')
+  ];
+
   programs.eza = {
     enable = true;
     enableBashIntegration = true;
@@ -85,6 +94,9 @@ in
 
       # zsh globbing 오류 무시
       setopt +o nomatch
+
+      # krew (kubectl 플러그인) PATH 추가 - kubectl-sniff 등 ~/.krew/bin 의 플러그인 실행용
+      export PATH="''${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
       # 프롬프트 오른쪽에 시간 출력
       RPROMPT="[%D{%H:%M:%S}]"
@@ -233,6 +245,8 @@ in
       gitsigns-nvim # git 거터
       nvim-autopairs
       indent-blankline-nvim
+      nvim-ufo # 코드 접기(folding) UI
+      promise-async # nvim-ufo 의존성
       (nvim-treesitter.withPlugins (p: with p; [
         rust
         toml
