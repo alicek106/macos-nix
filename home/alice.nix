@@ -295,6 +295,9 @@ in
       set termguicolors  " treesitter/테마/scrollbar 렌더링에 필요
       set bg=dark
       set nu
+      set foldcolumn=0
+      " fold 기능은 유지하되 왼쪽 foldcolumn 표시만 끔 (ufo/ftplugin이 다시 켜도 강제 0)
+      autocmd FileType,BufWinEnter * setlocal foldcolumn=0
       set smartindent
       set shiftwidth=4
       set tabstop=4

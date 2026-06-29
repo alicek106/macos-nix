@@ -16,7 +16,19 @@
       "Read(//Users/alicek106/working/eclairs/.vscode/**)",
       "Read(//Users/alicek106/.vscode/extensions/**)",
       "Bash(git add *)",
-      "Bash(nix build *)"
+      "Bash(nix build *)",
+      "Read(//nix/store/4qkqapganjsyskcpyzzw123xqlvamcyq-neovim-0.11.3/bin/**)",
+      "Bash(/nix/store/4qkqapganjsyskcpyzzw123xqlvamcyq-neovim-0.11.3/bin/nvim --version)",
+      "Bash(grep -iv \"krew$\")",
+      "Bash(eza -la /nix/store/rk6i44bhz8jw3zi5iyiqzb2wbp95q2mg-krew-0.4.5/bin/)",
+      "Read(//nix/store/rk6i44bhz8jw3zi5iyiqzb2wbp95q2mg-krew-0.4.5/bin/**)",
+      "Read(//nix/store/5aq73vv6yqhf1hz6q7an3hr2dkq0129a-system-path/bin/**)",
+      "Bash(timeout 500 darwin-rebuild build --flake .#alicek106-m4)",
+      "Bash(kubectx --version)",
+      "Bash(kubectx -V)",
+      "Bash(git checkout *)",
+      "mcp__plugin_context-mode_context-mode__ctx_batch_execute",
+      "mcp__plugin_context-mode_context-mode__ctx_execute_file"
     ]
   }
 }
