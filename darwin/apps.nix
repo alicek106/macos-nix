@@ -31,6 +31,7 @@ let
     };
 
   cliTools = with pkgs; [
+    wireshark
     # basics
     git
     jq
@@ -80,7 +81,6 @@ let
     teleport_17
     kubeseal
     nodejs_24
-    codex
     terminal-notifier
     python312
     python312Packages.pip
@@ -92,6 +92,9 @@ let
     gh
     inputs.claude-code.packages.${system}.default
     swiftlint
+    pprof
+    graphviz
+    opentofu
 
     # devsisters
     vault
@@ -103,6 +106,11 @@ let
     stats
     ice-bar
     rectangle
+
+    # agenix rust implementation
+    ragenix
+
+    p4
   ];
 
   guiApps = with pkgs; [
