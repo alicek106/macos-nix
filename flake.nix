@@ -15,6 +15,9 @@
 
     claude-code.url = "github:sadjow/claude-code-nix";
     claude-code.inputs.nixpkgs.follows = "nixpkgs";
+
+    ksniff.url = "github:alicek106/ksniff";
+    ksniff.flake = false;
   };
 
   outputs = inputs@{ self, nixpkgs, darwin, home-manager, nix-index-database, ... }:

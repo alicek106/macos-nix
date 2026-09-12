@@ -95,7 +95,7 @@ in
       # zsh globbing 오류 무시
       setopt +o nomatch
 
-      # krew (kubectl 플러그인) PATH 추가 - kubectl-sniff 등 ~/.krew/bin 의 플러그인 실행용
+      # krew (kubectl 플러그인) PATH 추가 - ~/.krew/bin 의 플러그인 실행용
       export PATH="''${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
       # 프롬프트 오른쪽에 시간 출력

@@ -79,6 +79,22 @@
         "type": "github"
       }
     },
+    "ksniff": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789224004,
+        "narHash": "sha256-l3BehejkY475Tx82NdMEHZ8bbRJ3x78kyeVomyU/O98=",
+        "owner": "alicek106",
+        "repo": "ksniff",
+        "rev": "d8c69cd0fbd302d91d3ddf35916e52188d3e1f6e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alicek106",
+        "repo": "ksniff",
+        "type": "github"
+      }
+    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -136,6 +152,7 @@
         "claude-code": "claude-code",
         "darwin": "darwin",
         "home-manager": "home-manager",
+        "ksniff": "ksniff",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",
         "pkgs_go_1_24_2": "pkgs_go_1_24_2"
