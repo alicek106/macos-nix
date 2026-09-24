@@ -109,6 +109,7 @@ let
     pprof
     graphviz
     opentofu
+    zbar
 
     # devsisters
     vault
@@ -172,6 +173,7 @@ in
     jetbrains-mono
     nerd-fonts.jetbrains-mono # neovim 상태바/아이콘용 글리프 (iTerm 폰트로 지정 필요)
     d2coding
+    sarasa-gothic # iTerm Non-ASCII 폰트 후보 (Sarasa Term K)
   ];
 }
 
