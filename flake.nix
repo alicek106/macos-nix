@@ -1,5 +1,5 @@
 {
-  description = "Fully declarative macOS for M4: apps + Dock + defaults + dotfiles";
+  description = "Fully declarative macOS (M4 MacBook, M1 Mac Studio): apps + Dock + defaults + dotfiles";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -24,10 +24,8 @@
     let
       system = "aarch64-darwin"; # Apple Silicon
       username = "alicek106"; # 단일 사용자명
-      hostname = "alicek106-m4"; # 호스트명
-    in
-    {
-      darwinConfigurations.${hostname} = darwin.lib.darwinSystem {
+
+      mkDarwin = hostname: darwin.lib.darwinSystem {
         inherit system;
 
         # 모듈 공통 인자(필요 시 사용)
@@ -45,6 +43,13 @@
           # nix-index 데이터베이스 모듈
           nix-index-database.darwinModules.nix-index
         ];
+      };
+    in
+    {
+      # 키 = 호스트명 (networking.hostName 등에 그대로 들어감)
+      darwinConfigurations = {
+        "alicek106-m4" = mkDarwin "alicek106-m4"; # M4 MacBook
+        "alicek106-m1" = mkDarwin "alicek106-m1"; # M1 Mac Studio
       };
 
       # devShell: 고정 버전의 kubectl/terraform/curl을 즉시 사용

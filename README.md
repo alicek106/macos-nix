@@ -5,7 +5,9 @@
 - `xcode-select --install`
 - `/usr/sbin/softwareupdate --install-rosetta --agree-to-license`
 - nix 설치: `curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install`
-- build: `nix run github:LnL7/nix-darwin --switch --flake .#"alicek106-m4"`
+- build (최초 1회): `sudo nix run github:LnL7/nix-darwin#darwin-rebuild -- switch --flake .#"<호스트>"`
+  - `<호스트>`: M4 MacBook = `alicek106-m4`, M1 Mac Studio = `alicek106-m1`
+  - 이후에는 `./apply.sh` (현재 LocalHostName으로 설정 선택)
 - wireguard profile 내려받고 `sudo mkdir -p /usr/local/etc/wireguard/`
   - profile 파일을 /usr/local/etc/wireguard/ 에 옮겨서 `wg-quick up vpn_infra` (상시)
 - `saml2aws configure`

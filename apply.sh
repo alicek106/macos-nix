@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo -H darwin-rebuild switch --flake .#"alicek106-m4"
+sudo -H darwin-rebuild switch --flake .#"$(scutil --get LocalHostName)"
