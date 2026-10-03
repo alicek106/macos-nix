@@ -57,6 +57,7 @@ lib.mkIf (hostname == "alicek106-m1") {
     pkgs.git-lfs # SolitaireX: *.so, *.bundle 이 LFS
     pkgs.cocoapods # Unity iOS export 후 pod install
     pkgs.xcbeautify # xcodebuild 로그 정리
+    pkgs.xcodegen # 시뮬레이터 탭 확인용 XCUITest 프로젝트 생성
   ];
 
   # nixpkgs 의 unityhub 는 Linux 전용이라 Unity Hub 만 brew cask 로 선언한다.
