@@ -59,6 +59,18 @@ lib.mkIf (hostname == "alicek106-m1") {
     pkgs.xcbeautify # xcodebuild 로그 정리
   ];
 
+  # nixpkgs 의 unityhub 는 Linux 전용이라 Unity Hub 만 brew cask 로 선언한다.
+  # /opt/homebrew 에 손으로 설치한 formula 들이 있으므로 cleanup 은 반드시 "none".
+  homebrew = {
+    enable = true;
+    onActivation = {
+      cleanup = "none";
+      autoUpdate = false;
+      upgrade = false;
+    };
+    casks = [ "unity-hub" ];
+  };
+
   # git lfs install 을 손으로 하면 ~/.gitconfig 가 바뀌므로 home-manager 로 선언한다.
   home-manager.users.${username}.programs.git.lfs.enable = true;
 
