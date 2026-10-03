@@ -59,6 +59,9 @@ lib.mkIf (hostname == "alicek106-m1") {
     pkgs.xcbeautify # xcodebuild 로그 정리
   ];
 
+  # git lfs install 을 손으로 하면 ~/.gitconfig 가 바뀌므로 home-manager 로 선언한다.
+  home-manager.users.${username}.programs.git.lfs.enable = true;
+
   # 래퍼의 정확한 /nix/store 경로만 NOPASSWD. 일반 sudo 는 계속 비밀번호를 요구한다.
   security.sudo.extraConfig = ''
     ${username} ALL=(root) NOPASSWD: ${claudeAsudoExec}/bin/claude-asudo-exec
