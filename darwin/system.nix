@@ -1,10 +1,7 @@
 { pkgs, username, hostname, system, ... }:
 
 {
-  services.tailscale = {
-    enable = true;
-    package = pkgs.tailscale;
-  };
+  # NOTE: tailscale은 Mac App 혹은 웹페이지에서 내려받읍시다..
 
   # nixpkgs & nix 전역 설정
   nixpkgs.hostPlatform = system;

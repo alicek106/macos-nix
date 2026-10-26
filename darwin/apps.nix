@@ -85,7 +85,7 @@ let
     uv
     grpcui
     grpcurl
-    tailscale
+
     stuntman
     istioctl
     postgresql_17_jit
@@ -126,6 +126,10 @@ let
     ragenix
 
     p4
+
+    virt-viewer
+
+    mysql84
   ];
 
   guiApps = with pkgs; [
@@ -174,6 +178,7 @@ in
     nerd-fonts.jetbrains-mono # neovim 상태바/아이콘용 글리프 (iTerm 폰트로 지정 필요)
     d2coding
     sarasa-gothic # iTerm Non-ASCII 폰트 후보 (Sarasa Term K)
+    nanum-gothic-coding # iTerm Non-ASCII(한글) 폰트
   ];
 }
 
