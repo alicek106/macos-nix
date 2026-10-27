@@ -25,6 +25,9 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+    # HM이 관리할 파일이 이미 존재하면 .backup 으로 옮기고 진행
+    # (없으면 activation이 중단되어 /run/current-system 이 갱신되지 않음)
+    backupFileExtension = "backup";
     users.${username} = import ../home/alice.nix;
   };
 
