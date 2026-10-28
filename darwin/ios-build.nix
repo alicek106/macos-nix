@@ -37,5 +37,6 @@ lib.mkIf (hostname == "alicek106-m1") {
   environment.systemPackages = [
     (lib.hiPrio swiftlint)
     fastlane
+    pkgs.xcbeautify
   ];
 }
