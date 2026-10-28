@@ -1,5 +1,19 @@
-{ lib, username, hostname, ... }:
+{ lib, pkgs, username, hostname, ... }:
 
+let
+  swiftlint = pkgs.swiftlint.overrideAttrs (_: {
+    version = "0.59.0";
+    src = pkgs.fetchurl {
+      url = "https://github.com/realm/SwiftLint/releases/download/0.59.0/portable_swiftlint.zip";
+      hash = "sha256-rsGt9hy2EklZEA7eQ/Tp9eztVLVlVn9LMPTeZz9fQYA=";
+    };
+  });
+
+  fastlane = pkgs.writeShellScriptBin "fastlane" ''
+    export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+    exec ${pkgs.fastlane}/bin/fastlane "$@"
+  '';
+in
 lib.mkIf (hostname == "alicek106-m1") {
   services.openssh.enable = true;
 
@@ -15,7 +29,13 @@ lib.mkIf (hostname == "alicek106-m1") {
     '';
 
     # 원래 손으로 만들었던 파일에 대한 해시값. 지금 한 번만 쓰이고 쓰이지 않는다.
-    # 이걸 명시하지 않으면 nix는 자기가 만든 /etc 파일이 아니라고 오류냄 
+    # 이걸 명시하지 않으면 nix는 자기가 만든 /etc 파일이 아니라고 오류냄
     knownSha256Hashes = [ "e923fb5e9fa96faa68bc2c8326c46833e2aa6dc05c5ad856d0a649d224b41daf" ];
   };
+
+  # hiPrio: wins over swiftlint from apps.nix
+  environment.systemPackages = [
+    (lib.hiPrio swiftlint)
+    fastlane
+  ];
 }
