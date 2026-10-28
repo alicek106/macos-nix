@@ -40,6 +40,7 @@
           ./darwin/apps.nix
           ./darwin/defaults.nix
           ./darwin/solitaire-dev.nix # M1 Mac Studio 전용 (모듈 내부 hostname 조건)
+          ./darwin/ios-build.nix # M1 only
 
           # nix-index 데이터베이스 모듈
           nix-index-database.darwinModules.nix-index
