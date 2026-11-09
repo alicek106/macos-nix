@@ -339,6 +339,22 @@ in
       set undodir=~/.vim/undodir
       set undofile
       set mouse=
+
+      " === 저장 시 nix 파일 자동 포맷 (nixpkgs-fmt) ===
+      function! FormatNix()
+        let l:view = winsaveview()
+        silent %!nixpkgs-fmt
+        if v:shell_error != 0
+          undo
+          echohl ErrorMsg | echom "nixpkgs-fmt failed, changes reverted" | echohl None
+        endif
+        call winrestview(l:view)
+      endfunction
+
+      augroup NixFormat
+        autocmd!
+        autocmd BufWritePre *.nix call FormatNix()
+      augroup END
     '';
   };
   home.file.".vim/undodir/.keep".text = "";

@@ -130,6 +130,7 @@ let
     virt-viewer
 
     mysql84
+    stern
   ];
 
   guiApps = with pkgs; [
