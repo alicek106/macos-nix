@@ -1,20 +1,13 @@
--- UI / 편집 경험 현대화 (filetype 무관 공통 설정)
--- neovim.nix 의 programs.neovim.initLua 에서 require("ui") 로 로드됨
-
--- 컬러스킴: tokyonight (IntelliJ Darcula 느낌의 다크 테마)
 require("tokyonight").setup({
   style = "night",
   on_highlights = function(hl, c)
-    -- 인레이 힌트가 배경에 묻히지 않게 약간 흐린 회색으로
     hl.LspInlayHint = { fg = c.comment, bg = "NONE" }
   end,
 })
 vim.cmd.colorscheme("tokyonight-night")
 
--- 아이콘
 require("nvim-web-devicons").setup({})
 
--- 상태바 (vim-airline 대체)
 require("lualine").setup({
   options = {
     theme = "tokyonight",
@@ -24,14 +17,11 @@ require("lualine").setup({
     globalstatus = true,
   },
   sections = {
-    lualine_c = { { "filename", path = 1 } }, -- 상대경로 표시
+    lualine_c = { { "filename", path = 1 } },
     lualine_x = { "diagnostics", "encoding", "filetype" },
   },
 })
 
--- Treesitter 하이라이팅과 들여쓰기.
--- nvim-treesitter main 브랜치에서는 하이라이팅을 neovim 이 직접 하므로, FileType 이벤트에서 켜기만 한다.
--- 파서는 neovim.nix 의 nvim-treesitter.withPlugins 로 설치하며, 아래 목록도 그 파서에 맞춘다.
 local ts_filetypes = { "toml", "lua", "json", "yaml", "bash", "sh", "markdown", "help" }
 vim.api.nvim_create_autocmd("FileType", {
   pattern = ts_filetypes,
@@ -41,22 +31,16 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Git 변경사항 거터 표시
 require("gitsigns").setup()
 
--- 괄호/따옴표 자동 짝맞춤
 require("nvim-autopairs").setup({})
 
--- 들여쓰기 가이드 라인
 require("ibl").setup()
 
--- 코드 접기 (nvim-ufo) ── IntelliJ 식 collapse
--- yaml 등 모든 파일에서 treesitter 구조 기반 접기, 안 되면 indent 로 폴백
-vim.o.foldcolumn = "1" -- gutter 에 접기 표시(−/+)
-vim.o.foldlevel = 99 -- 처음엔 전부 펼친 상태
+vim.o.foldcolumn = "1"
+vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
--- gutter 폴드 마커: 펼침 "-", 접힘 "+"
 vim.opt.fillchars:append({ foldopen = "-", foldclose = "+", foldsep = " " })
 
 require("ufo").setup({
@@ -72,13 +56,11 @@ fmap("n", "zM", ufo.closeAllFolds, { desc = "모든 폴드 접기" })
 fmap("n", "zr", ufo.openFoldsExceptKinds, { desc = "한 단계 펼치기" })
 fmap("n", "zm", ufo.closeFoldsWith, { desc = "한 단계 접기" })
 fmap("n", "zp", function()
-  -- 접힌 내용 미리보기 (IntelliJ 의 fold preview)
   if not ufo.peekFoldedLinesUnderCursor() then
     vim.lsp.buf.hover()
   end
 end, { desc = "접힌 내용 미리보기" })
 
--- Telescope: 퍼지 파인더 (Find Usages / Go to Symbol / Search Everywhere 대응)
 local telescope = require("telescope")
 telescope.setup({
   defaults = {
@@ -88,7 +70,6 @@ telescope.setup({
   },
 })
 
--- 기존 fzf 키맵(<esc>b/f/h)은 그대로 두고, telescope 는 <leader>f* 네임스페이스 사용
 local builtin = require("telescope.builtin")
 local map = vim.keymap.set
 map("n", "<leader>ff", builtin.find_files, { desc = "Find files" })

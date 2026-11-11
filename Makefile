@@ -1,4 +1,4 @@
-# 자주 쓰는 nix-darwin 명령. `make` 만 입력하면 명령 목록을 보여 준다.
+# 자주 사용하는 nix-darwin 명령. `make` 만 입력하면 명령 목록을 보여 준다.
 # 호스트는 현재 맥의 LocalHostName 으로 정하고, 다른 호스트를 빌드하려면 `make build HOST=alicek106-m1` 처럼 지정한다.
 
 HOST ?= $(shell scutil --get LocalHostName)
@@ -24,7 +24,7 @@ update-unstable: ## unstable 채널만 갱신한다 (claude-code 등 pkgs.unstab
 update: ## 모든 flake input 을 최신으로 갱신한다
 	nix flake update
 
-gc: ## 7일보다 오래된 시스템 세대와 쓰지 않는 store 경로를 지운다 (sudo 필요)
+gc: ## 7일보다 오래된 시스템 세대와 사용하지 않는 store 경로를 지운다 (sudo 필요)
 	sudo nix-collect-garbage --delete-older-than 7d
 
 fmt: ## nix 파일을 포맷한다 (nixpkgs-fmt)

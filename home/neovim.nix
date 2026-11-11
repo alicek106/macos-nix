@@ -1,4 +1,4 @@
-# neovim 설정. 플러그인은 nixpkgs 의 vimPlugins 로 설치하고, lua 설정은 nvim/ 디렉터리에 있다.
+# lua 설정은 nvim/ 디렉터리 참고
 { pkgs, ... }:
 
 {
@@ -8,7 +8,7 @@
     vimAlias = true;
     withNodeJs = true;
     withPython3 = true;
-    withRuby = false; # ruby 로 만든 플러그인을 쓰지 않는다.
+    withRuby = false;
 
     plugins = with pkgs.vimPlugins; [
       typescript-vim
@@ -65,7 +65,6 @@
       set termguicolors  " treesitter, 테마, scrollbar 를 제대로 표시하려면 필요
       set bg=dark
       set nu
-      " 접기 기능은 쓰되 왼쪽 foldcolumn 은 숨긴다 (ufo, ftplugin 이 다시 켜도 0 으로 되돌린다)
       set foldcolumn=0
       autocmd FileType,BufWinEnter * setlocal foldcolumn=0
       set smartindent

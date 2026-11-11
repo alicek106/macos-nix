@@ -17,23 +17,23 @@
 | AWS CLI v1 이 v2 를 가림 | nix awscli 1.42 가 우선 | 적용하면 해결 |
 | 이전 설정이 남긴 앱 링크 폴더 | `~/Applications/Nix Apps` | 적용 후 직접 조치 |
 | pip 로 설치한 Python 명령 | nix python 경로에 묶여 있음 | 적용 후 직접 조치 |
-| 더 이상 쓰지 않는 파일 | zinit, treesitter 파서 등 | 적용 후 직접 조치 |
+| 더 이상 사용하지 않는 파일 | zinit, treesitter 파서 등 | 적용 후 직접 조치 |
 | 설정 밖의 앱, CLI, 홈 파일 | 직접 설치한 앱 약 30개 등 | 판단 필요 |
 
 ## nix store 경로의 내용 변경
 
-nix 는 store 경로의 내용이 빌드 후 바뀌지 않는다는 전제로 동작하는데, 아래 경로는 빌드 후에 내용이 바뀌었다 (`nix-store --verify-path` 결과 modified).
+nix 는 store 경로의 내용이 빌드 후 변경되지 않는다는 전제로 동작하는데, 아래 경로는 빌드 후에 내용이 변경되었다 (`nix-store --verify-path` 결과 modified).
 
-| store 경로 | 바뀐 내용 | 원인 |
+| store 경로 | 변경된 내용 | 원인 |
 |---|---|---|
-| `iterm2-3.5.14` | 앱 버전이 3.7.1 로 바뀜 | iTerm2 자동 업데이트가 store 안의 앱을 덮어씀 |
-| `vscode-1.103.2` | 앱 버전이 1.123.0 으로 바뀜 | VS Code 자동 업데이트가 store 안의 앱을 덮어씀 |
+| `iterm2-3.5.14` | 앱 버전이 3.7.1 로 변경됨 | iTerm2 자동 업데이트가 store 안의 앱을 덮어씀 |
+| `vscode-1.103.2` | 앱 버전이 1.123.0 으로 변경됨 | VS Code 자동 업데이트가 store 안의 앱을 덮어씀 |
 | `nodejs-24.7.0` | `@openai/codex` 추가 | npm 전역 설치 경로가 nodejs store 경로라서 `npm i -g` 가 store 에 씀 |
-| `hm_gitconfig` | `user.email` 이 회사 주소로 바뀜 | store 의 gitconfig 파일을 직접 수정 |
+| `hm_gitconfig` | `user.email` 이 회사 주소로 변경됨 | store 의 gitconfig 파일을 직접 수정 |
 
-**적용하면 해결.** 26.05 로 올리면서 네 패키지 모두 새 store 경로를 쓰고, 회사 이메일은 `home/git.nix` 에 선언했다. 내용이 바뀐 옛 경로는 이전 시스템 세대가 `make gc` 로 지워질 때 함께 지워진다.
+**적용하면 해결.** 26.05 로 올리면서 네 패키지 모두 새 store 경로를 사용하고, 회사 이메일은 `home/git.nix` 에 선언했다. 내용이 변경된 옛 경로는 이전 시스템 세대가 `make gc` 로 지워질 때 함께 지워진다.
 
-이전 설정에서는 Dock 이 store 경로를 가리키는 링크로 앱을 실행했기 때문에, 앱이 스스로 업데이트하면 store 안의 파일이 바뀌었다. 지금은 nix-darwin 이 `/Applications/Nix Apps` 에 복사해 둔 앱을 실행하므로 store 는 바뀌지 않는다. 같은 일이 다시 생기지 않도록 아래 내용을 확인한다.
+이전 설정에서는 Dock 이 store 경로를 가리키는 링크로 앱을 실행했기 때문에, 앱이 스스로 업데이트하면 store 안의 파일이 변경되었다. 지금은 nix-darwin 이 `/Applications/Nix Apps` 에 복사해 둔 앱을 실행하므로 store 는 변경되지 않는다. 같은 일이 다시 생기지 않도록 아래 내용을 확인한다.
 
 - **앱 자동 업데이트**: 스스로 업데이트한 앱은 다음 적용 때 nix 버전으로 되돌아가므로 끄는 것이 좋음
   - iTerm2: 이미 꺼져 있음
@@ -65,11 +65,11 @@ PATH 에서 nix 경로보다 앞에 있는 설치본 때문에 nix 로 설치한
 - **`/Applications/Nix Apps`**: 모두 설정에 선언된 패키지
 - **App Store 에서 설치**: Developer, Disk Inspector, Fuwari, KakaoTalk, Pages Creator Studio, Paint X, Tailscale, Unicorn HTTPS
 - **직접 설치**: boringNotch, Brave Browser, CLIP STUDIO, DBeaver, Discord, Enpass, Firefox, Google Chrome, krita, MapleStory Worlds, OpenVPN Connect, p4admin/p4merge/p4v, Prism Launcher, QuickMD, Raycast, Remote Desktop Manager, VLC, Wacom 도구
-- **Dock 앱 순서**: 손으로 바꾼 라이브 순서(VS Code, iTerm2, Slack)를 설정에 반영
+- **Dock 앱 순서**: 직접 변경한 라이브 순서(VS Code, iTerm2, Slack)를 설정에 반영
 
 Google Chrome 과 Tailscale 은 README 의 수동 설치 항목에 있다. 나머지 중 nixpkgs 에 있는 앱(DBeaver, Discord, Firefox, Raycast, VLC 등)은 `darwin/packages.nix` 의 `guiApps` 로 옮길 수 있다 (판단 필요).
 
-`~/Applications/Nix Apps` 는 이전 설정이 만든 링크 폴더이며 지금 설정은 이 폴더를 쓰지 않는다. 설정에 없는 `Ghostty.app`(커밋되지 않은 설정으로 적용된 적 있음)과 `Google Chrome.app`(139 버전) 링크도 남아 있다. 적용 후 root 소유 폴더이므로 sudo 로 지운다 (직접 조치).
+`~/Applications/Nix Apps` 는 이전 설정이 만든 링크 폴더이며 지금 설정은 이 폴더를 사용하지 않는다. 설정에 없는 `Ghostty.app`(커밋되지 않은 설정으로 적용된 적 있음)과 `Google Chrome.app`(139 버전) 링크도 남아 있다. 적용 후 root 소유 폴더이므로 sudo 로 지운다 (직접 조치).
 
 ```bash
 sudo rm -rf ~/Applications/"Nix Apps"

@@ -1,8 +1,7 @@
-# nixpkgs 에 패키지를 추가하는 overlay.
-# darwin/default.nix 에서 등록하며, home-manager 도 같은 pkgs 를 쓰므로(useGlobalPkgs) 양쪽에서 pkgs.<이름> 으로 쓸 수 있다.
+# nixpkgs 에 overlay 패키지 추가하는 코드. darwin/default.nix에서 사용한다.
+# useGlobalPkgs=false 이면 home-manager 가 nixpkgs를 따로 만들어서, overlay 및 allowUnfree를 home/* module에서 사용할 수 없음.
+# 하지만 이 값을 true로 설정하면 동일한 pkgs 인스턴스를 사용하므로, darwin/ 과 home/ 모두 pkgs.unstable.<package name>과 pkgs.kubectl-sniff를 사용할 수 있음..!
 inputs: final: prev: {
-  # 최신 버전이 필요한 패키지는 pkgs.unstable.<이름> 으로 가져온다 (예: pkgs.unstable.claude-code).
-  # `make update-unstable` 은 이 채널만 갱신하므로, stable 패키지는 그대로 두고 이 패키지들만 올릴 수 있다.
   unstable = import inputs.nixpkgs-unstable {
     inherit (prev.stdenv.hostPlatform) system;
     config.allowUnfree = true;
