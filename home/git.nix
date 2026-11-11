@@ -4,9 +4,9 @@
 {
   programs.git = {
     enable = true;
-    userName = "alicek106";
-    userEmail = "chanho.yong@devsisters.com";
-    extraConfig = {
+    settings = {
+      user.name = "alicek106";
+      user.email = "chanho.yong@devsisters.com";
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;

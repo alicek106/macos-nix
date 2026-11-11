@@ -12,6 +12,7 @@ in
     vimAlias = true;
     withNodeJs = true;
     withPython3 = true;
+    withRuby = false; # ruby 로 만든 플러그인을 쓰지 않는다.
 
     plugins = with pkgs.vimPlugins; [
       typescript-vim
@@ -67,7 +68,7 @@ in
       nvim-nio
     ];
 
-    extraLuaConfig = ''
+    initLua = ''
       require("scrollbar").setup()
       require("ui")
       require("rust")
