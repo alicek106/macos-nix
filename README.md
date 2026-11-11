@@ -14,7 +14,7 @@ nix-darwin 과 home-manager 로 맥 두 대의 패키지, macOS 환경설정, �
 ```
 flake.nix              # input(패키지 채널 등)과 호스트 목록
 Makefile               # 빌드, 적용, 업데이트 명령
-overlays/default.nix   # pkgs.unstable, pkgs.go_1_24_2, 직접 빌드하는 패키지를 pkgs 에 추가
+overlays/default.nix   # pkgs.unstable 과 직접 빌드하는 패키지를 pkgs 에 추가
 pkgs/                  # 직접 빌드하는 패키지 (kubectl-sniff)
 darwin/                # 시스템 설정 (nix-darwin)
   default.nix          #   시스템 기본값, home-manager 연결
@@ -49,7 +49,7 @@ docs/live-drift.md     # 라이브 상태와 설정의 차이 점검 결과
 
 ### 패키지 채널
 
-flake.nix 에는 nixpkgs 채널을 두 개 둔다.
+flake.nix 의 nixpkgs 채널은 stable 과 unstable 로 나뉜다.
 
 - **stable** (`nixpkgs`, 지금은 26.05): 기본 채널. 릴리스 안에서는 보안 수정 위주로만 바뀌어서 갱신해도 깨질 가능성이 낮음 (nix-darwin, home-manager 도 같은 릴리스 브랜치 사용)
 - **unstable** (`nixpkgs-unstable`): overlay 에서 `pkgs.unstable` 로 노출하며 아래 경우에만 사용
@@ -82,7 +82,7 @@ stable 채널까지 갱신하려면 `make update` 를 쓴다. 새 stable 릴리�
 
 ### 특정 버전 고정
 
-nixpkgs 의 특정 커밋에 있는 버전을 계속 쓰려면, 그 커밋을 flake.nix 에 별도 input 으로 추가하고 `overlays/default.nix` 에서 `pkgs.<이름>` 으로 노출한다. 모듈 안에서 커밋을 직접 `import` 하지 않는다. Go 1.24.2(`nixpkgs-go-1-24-2` input, `pkgs.go_1_24_2`)가 이 방식으로 고정되어 있다.
+nixpkgs 의 특정 커밋에 있는 버전을 계속 쓰려면, 그 커밋을 flake.nix 에 별도 input 으로 추가하고 `overlays/default.nix` 에서 `pkgs.<이름>` 으로 노출한다. 모듈 안에서 커밋을 직접 `import` 하지 않는다.
 
 ### 직접 빌드하는 패키지
 

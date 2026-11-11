@@ -25,9 +25,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Go 1.24.2 가 들어 있는 nixpkgs 커밋. Go 버전을 고정하려는 input 이므로 nixpkgs 를 follows 하지 않는다.
-    nixpkgs-go-1-24-2.url = "github:NixOS/nixpkgs/eaeed9530c76ce5f1d2d8232e08bec5e26f18ec1";
-
     # ksniff 개인 포크의 소스 (flake 가 아닌 일반 저장소)
     ksniff = {
       url = "github:alicek106/ksniff";

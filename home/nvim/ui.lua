@@ -1,5 +1,5 @@
 -- UI / 편집 경험 현대화 (filetype 무관 공통 설정)
--- alice.nix 의 programs.neovim.extraLuaConfig 에서 require("ui") 로 로드됨
+-- neovim.nix 의 programs.neovim.initLua 에서 require("ui") 로 로드됨
 
 -- 컬러스킴: tokyonight (IntelliJ Darcula 느낌의 다크 테마)
 require("tokyonight").setup({
@@ -29,10 +29,16 @@ require("lualine").setup({
   },
 })
 
--- Treesitter: 시맨틱 하이라이팅 + 들여쓰기 (문법은 nix가 미리 빌드 → ensure_installed 불필요)
-require("nvim-treesitter.configs").setup({
-  highlight = { enable = true, additional_vim_regex_highlighting = false },
-  indent = { enable = true },
+-- Treesitter 하이라이팅과 들여쓰기.
+-- nvim-treesitter main 브랜치에서는 하이라이팅을 neovim 이 직접 하므로, FileType 이벤트에서 켜기만 한다.
+-- 파서는 neovim.nix 의 nvim-treesitter.withPlugins 로 설치하며, 아래 목록도 그 파서에 맞춘다.
+local ts_filetypes = { "toml", "lua", "json", "yaml", "bash", "sh", "markdown", "help" }
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = ts_filetypes,
+  callback = function()
+    pcall(vim.treesitter.start)
+    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  end,
 })
 
 -- Git 변경사항 거터 표시

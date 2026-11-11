@@ -35,7 +35,9 @@ nix 는 store 경로의 내용이 빌드 후 바뀌지 않는다는 전제로 �
 
 이전 설정에서는 Dock 이 store 경로를 가리키는 링크로 앱을 실행했기 때문에, 앱이 스스로 업데이트하면 store 안의 파일이 바뀌었다. 지금은 nix-darwin 이 `/Applications/Nix Apps` 에 복사해 둔 앱을 실행하므로 store 는 바뀌지 않는다. 같은 일이 다시 생기지 않도록 아래 내용을 확인한다.
 
-- **앱 자동 업데이트**: 스스로 업데이트한 앱은 다음 적용 때 nix 버전으로 되돌아가므로 끄는 것이 좋음 (iTerm2 는 이미 꺼져 있고, VS Code 는 settings.json 에 `"update.mode": "none"` 추가)
+- **앱 자동 업데이트**: 스스로 업데이트한 앱은 다음 적용 때 nix 버전으로 되돌아가므로 끄는 것이 좋음
+  - iTerm2: 이미 꺼져 있음
+  - VS Code: settings.json 에 `"update.mode": "none"` 추가
 - **npm 전역 설치 경로 (판단 필요)**: `npm config set prefix ~/.npm-global` 로 store 밖으로 옮기고 `~/.npm-global/bin` 을 PATH 에 추가
 
 ## nix 패키지를 가리는 nix 밖 설치본

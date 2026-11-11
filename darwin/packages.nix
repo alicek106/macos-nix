@@ -32,7 +32,7 @@ let
   ];
 
   devTools = with pkgs; [
-    go_1_24_2 # overlays/default.nix 에서 고정한 버전
+    go
     openjdk21
     nodejs_24
     python312

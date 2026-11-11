@@ -1,10 +1,6 @@
 # neovim 설정. 플러그인은 nixpkgs 의 vimPlugins 로 설치하고, lua 설정은 nvim/ 디렉터리에 있다.
 { pkgs, ... }:
 
-let
-  # rustaceanvim 의 디버거(dap) 어댑터로 쓰는 codelldb
-  codelldbDir = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb";
-in
 {
   programs.neovim = {
     enable = true;
@@ -38,7 +34,6 @@ in
       nvim-ufo # 코드 접기(folding) UI
       promise-async # nvim-ufo 의존성
       (nvim-treesitter.withPlugins (p: with p; [
-        rust
         toml
         lua
         json
@@ -49,29 +44,14 @@ in
         vimdoc
       ]))
 
-      # Rust LSP, 자동 완성
-      rustaceanvim
-      nvim-cmp
-      cmp-nvim-lsp
-      cmp-buffer
-      cmp-path
-      luasnip
-      cmp_luasnip
-      friendly-snippets
-
-      # 탐색, crate 의존성, 디버깅
+      # 파일, 문자열 검색
       telescope-nvim
       plenary-nvim
-      crates-nvim
-      nvim-dap
-      nvim-dap-ui
-      nvim-nio
     ];
 
     initLua = ''
       require("scrollbar").setup()
       require("ui")
-      require("rust")
     '';
 
     extraConfig = ''
@@ -151,15 +131,6 @@ in
   # undofile 을 저장할 디렉터리
   home.file.".vim/undodir/.keep".text = "";
 
-  # init.lua 에서 require("ui"), require("rust") 로 불러오는 lua 모듈
+  # init.lua 에서 require("ui") 로 불러오는 lua 모듈
   home.file.".config/nvim/lua/ui.lua".source = ./nvim/ui.lua;
-  home.file.".config/nvim/lua/rust.lua".source = ./nvim/rust.lua;
-
-  # rust.lua 가 require("nix_paths") 로 읽는 nix store 경로
-  home.file.".config/nvim/lua/nix_paths.lua".text = ''
-    return {
-      codelldb = "${codelldbDir}/adapter/codelldb",
-      liblldb = "${codelldbDir}/lldb/lib/liblldb.dylib",
-    }
-  '';
 }
