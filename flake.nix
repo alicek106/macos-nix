@@ -1,67 +1,59 @@
 {
-  description = "Fully declarative macOS (M4 MacBook, M1 Mac Studio): apps + Dock + defaults + dotfiles";
+  description = "alicek106 macOS 설정 (M4 MacBook, M1 Mac Studio): nix-darwin + home-manager";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    darwin.url = "github:LnL7/nix-darwin";
-    darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    nix-index-database.url = "github:Mic92/nix-index-database";
-    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    # 옛 Go 버전(1.24.2) 고정용 nixpkgs (follows 하면 안 됨)
-    pkgs_go_1_24_2.url = "github:NixOS/nixpkgs/eaeed9530c76ce5f1d2d8232e08bec5e26f18ec1";
+    darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    claude-code.url = "github:sadjow/claude-code-nix";
-    claude-code.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    ksniff.url = "github:alicek106/ksniff";
-    ksniff.flake = false;
+    # 미리 만들어 둔 nix-index 데이터베이스 (nix-locate, command-not-found 에서 사용)
+    nix-index-database = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Go 1.24.2 가 들어 있는 nixpkgs 커밋. Go 버전을 고정하려는 input 이므로 nixpkgs 를 follows 하지 않는다.
+    nixpkgs-go-1-24-2.url = "github:NixOS/nixpkgs/eaeed9530c76ce5f1d2d8232e08bec5e26f18ec1";
+
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # ksniff 개인 포크의 소스 (flake 가 아닌 일반 저장소)
+    ksniff = {
+      url = "github:alicek106/ksniff";
+      flake = false;
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, darwin, home-manager, nix-index-database, ... }:
+  outputs = inputs@{ nixpkgs, darwin, ... }:
     let
-      system = "aarch64-darwin"; # Apple Silicon
-      username = "alicek106"; # 단일 사용자명
+      username = "alicek106";
 
+      # 호스트 이름으로 nix-darwin 시스템 설정을 만든다.
+      # 호스트 이름은 flake output 이름이자 macOS 호스트명(darwin/default.nix 의 networking)으로 쓰인다.
       mkDarwin = hostname: darwin.lib.darwinSystem {
-        inherit system;
-
-        # 모듈 공통 인자(필요 시 사용)
-        specialArgs = { inherit system username hostname inputs; };
-
-        modules = [
-          # Home Manager를 nix-darwin에 통합
-          home-manager.darwinModules.home-manager
-
-          # 시스템 레벨 모듈
-          ./darwin/system.nix
-          ./darwin/apps.nix
-          ./darwin/defaults.nix
-
-          # nix-index 데이터베이스 모듈
-          nix-index-database.darwinModules.nix-index
-        ];
+        specialArgs = { inherit inputs username hostname; };
+        modules = [ ./darwin ];
       };
     in
     {
-      # 키 = 호스트명 (networking.hostName 등에 그대로 들어감)
-      darwinConfigurations = {
-        "alicek106-m4" = mkDarwin "alicek106-m4"; # M4 MacBook
-        "alicek106-m1" = mkDarwin "alicek106-m1"; # M1 Mac Studio
-      };
+      darwinConfigurations = nixpkgs.lib.genAttrs [
+        "alicek106-m4" # M4 MacBook
+        "alicek106-m1" # M1 Mac Studio
+      ]
+        mkDarwin;
 
-      # devShell: 고정 버전의 kubectl/terraform/curl을 즉시 사용
-      devShells.${system}.default =
-        let pkgs = import nixpkgs { inherit system; };
-        in pkgs.mkShell {
-          packages = with pkgs; [ kubectl terraform curl jq ];
-          shellHook = ''
-            echo "[devShell] kubectl=$(kubectl version --client --short 2>/dev/null || true)"
-            echo "[devShell] terraform=$(terraform version 2>/dev/null | head -1 || true)"
-          '';
-        };
+      # `nix fmt` 으로 저장소의 nix 파일을 포맷한다.
+      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixpkgs-fmt;
     };
 }
-

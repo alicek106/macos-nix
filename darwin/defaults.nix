@@ -1,32 +1,16 @@
-{ pkgs, lib, username, ... }:
+# macOS 시스템 환경설정 (키보드, 트랙패드, Dock, Finder).
+# nix-darwin 이 적용(activation) 때 defaults write 로 기록하고, Dock 설정이 있으면 Dock 을 다시 시작한다.
+{ ... }:
 
 let
-  # Nix 앱 링크를 만들 위치
-  userApps = "/Users/${username}/Applications/Nix Apps";
-
-  # 관리할 앱 목록 (여기 한 줄씩만 추가하면 symlink + Dock 자동 반영)
-  nixApps = [
-    { pkg = pkgs.iterm2; app = "iTerm2.app"; }
-    { pkg = pkgs.vscode; app = "Visual Studio Code.app"; }
-    { pkg = pkgs.slack; app = "Slack.app"; }
-    # { pkg = pkgs.google-chrome;  app = "Google Chrome.app"; }
-    # { pkg = pkgs.firefox;      app = "Firefox.app"; }  # 예: 추가하고 싶으면 이렇게
+  # Dock 에 고정할 앱 (왼쪽부터). nix 로 설치한 앱은 nix-darwin 이 /Applications/Nix Apps 에 복사해 둔다.
+  dockApps = [
+    "Visual Studio Code"
+    "iTerm2"
+    "Slack"
   ];
-
-  # Dock persistent-apps 경로 리스트
-  dockApps = map (a: "${userApps}/${a.app}") nixApps;
-
-  # symlink 생성 스크립트
-  mkLinks = lib.concatStringsSep "\n" (
-    map
-      (a: ''
-        ln -sfn "${a.pkg}/Applications/${a.app}" "${userApps}/${a.app}"
-      '')
-      nixApps
-  );
 in
 {
-  # macOS 기본 설정 (키보드, 트랙패드, Dock, Finder 등)
   system.defaults = {
     NSGlobalDomain = {
       KeyRepeat = 2;
@@ -36,7 +20,7 @@ in
       "com.apple.swipescrolldirection" = true;
       "com.apple.trackpad.enableSecondaryClick" = true;
       "com.apple.trackpad.scaling" = 0.9;
-      "com.apple.mouse.tapBehavior" = 1;
+      "com.apple.mouse.tapBehavior" = 1; # 탭하여 클릭
 
       NSAutomaticSpellingCorrectionEnabled = false;
       NSAutomaticCapitalizationEnabled = false;
@@ -61,7 +45,9 @@ in
       tilesize = 60;
       orientation = "bottom";
       show-recents = false;
-      persistent-apps = dockApps;
+      persistent-apps = map (name: "/Applications/Nix Apps/${name}.app") dockApps;
+
+      # 화면 네 모서리의 핫 코너 동작을 끈다.
       wvous-tl-corner = 1;
       wvous-tr-corner = 1;
       wvous-bl-corner = 1;
@@ -74,30 +60,4 @@ in
       FXEnableExtensionChangeWarning = false;
     };
   };
-
-  # postActivation 스크립트
-  system.activationScripts.postActivation.text = ''
-    ## Nix Apps 링크 보장
-    mkdir -p "${userApps}"
-    ${mkLinks}
-
-    ## 트랙패드 관련 (사용자 세션에서 preferences 설정)
-    user="${username}"
-    uid="$(/usr/bin/id -u "$user")"
-
-    /bin/launchctl asuser "$uid" /usr/bin/defaults write -g com.apple.mouse.tapBehavior -int 1
-    /bin/launchctl asuser "$uid" /usr/bin/defaults -currentHost write -g com.apple.mouse.tapBehavior -int 1
-
-    /bin/launchctl asuser "$uid" /usr/bin/defaults write com.apple.AppleMultitouchTrackpad Clicking -int 1
-    /bin/launchctl asuser "$uid" /usr/bin/defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
-    /bin/launchctl asuser "$uid" /usr/bin/defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -int 1 2>/dev/null || true
-    /bin/launchctl asuser "$uid" /usr/bin/defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true 2>/dev/null || true
-
-    /bin/launchctl asuser "$uid" /usr/bin/killall cfprefsd 2>/dev/null || true
-    /bin/launchctl asuser "$uid" /usr/bin/killall SystemUIServer 2>/dev/null || true
-
-    /usr/bin/killall Dock 2>/dev/null || true
-    /usr/bin/killall Finder 2>/dev/null || true
-  '';
 }
-
