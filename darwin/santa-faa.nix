@@ -69,6 +69,8 @@ let
         "${pkgs.k3d}/bin/k3d"
         "${pkgs.kubectl-view-secret}/bin/kubectl-view_secret"
         "${pkgs.kubectl-sniff}/bin/kubectl-sniff"
+        "${pkgs.argo-rollouts}/bin/kubectl-argo-rollouts"
+        "${pkgs.cmctl}/bin/cmctl"
         tofu
       ];
     };
@@ -90,7 +92,7 @@ let
 
     Databricks = watch {
       paths = [ "${home}/.databricks" "${home}/.databrickscfg" ];
-      # TODO: databricks-cli도 nix화 해야 함
+      processes = [ (nixBin "${pkgs.unstable.databricks-cli}/bin/databricks") ];
     };
 
     Perforce = watch {
@@ -105,7 +107,7 @@ let
 
     Codex = watch {
       paths = [ "${home}/.codex/auth.json" ];
-      processes = [ (teamId "2DC432GLL2") ]; # OpenAI
+      processes = [ (nixBin "${pkgs.unstable.codex}/bin/codex") ];
       # NOTE: mcp-remote는 node로 실행되어서 일반 node와 구분이 불가능
     };
 

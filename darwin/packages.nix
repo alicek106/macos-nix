@@ -42,6 +42,13 @@ let
     pprof
     graphviz
     jwt-cli
+    gopls
+    go-tools # staticcheck
+    rustup
+    sqlx-cli
+    mdbook
+    ast-grep
+    poetry
   ];
 
   kubernetesTools = with pkgs; [
@@ -55,6 +62,9 @@ let
     istioctl
     stern
     k3d
+    argo-rollouts # kubectl-argo-rollouts
+    cmctl # cert-manager
+    kubectl-node-shell
   ];
 
   cloudTools = with pkgs; [
@@ -68,6 +78,8 @@ let
     ragenix
     vault
     saml2aws
+    unstable.databricks-cli
+    ssm-session-manager-plugin
   ];
 
   networkTools = with pkgs; [
@@ -88,6 +100,7 @@ let
 
   miscTools = with pkgs; [
     unstable.claude-code
+    unstable.codex
     gh
     ffmpeg
     zbar
@@ -108,6 +121,12 @@ let
     stats
     ice-bar
     rectangle
+    dbeaver-bin
+    discord
+    unstable.raycast
+    vlc-bin
+    unstable.p4v
+    prismlauncher
   ];
 in
 {

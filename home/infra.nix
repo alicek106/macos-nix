@@ -5,12 +5,17 @@
     (pkgs.writeScriptBin "aws-login-all" (builtins.readFile ./bin/aws-login-all))
   ];
 
+  home.sessionPath = [ "$HOME/.tfswitch" ];
+
   programs.zsh = {
     sessionVariables = {
       TF_PLUGIN_CACHE_DIR = "$HOME/.terraform.d/plugin-cache";
       AWS_SDK_LOAD_CONFIG = "true";
       AWS_PROFILE = "saml";
       KUBE_EDITOR = "vim";
+
+      TF_INSTALL_PATH = "$HOME/.tfswitch";
+      TF_BINARY_PATH = "$HOME/.tfswitch/terraform";
 
       # vaultctx에서는 이 값을 사용하지 않음. terraform 등 바이너리에서 사용하기 위한 기본 값.
       VAULT_ADDR = "https://vault.devsisters.cloud";

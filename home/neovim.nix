@@ -65,8 +65,6 @@
       set termguicolors  " treesitter, 테마, scrollbar 를 제대로 표시하려면 필요
       set bg=dark
       set nu
-      set foldcolumn=0
-      autocmd FileType,BufWinEnter * setlocal foldcolumn=0
       set smartindent
       set shiftwidth=4
       set tabstop=4
