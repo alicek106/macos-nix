@@ -8,6 +8,8 @@ let
     in ''[[ -f "${plist}" ]] && /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "${plist}" 2>/dev/null || true'';
 in
 {
+  imports = [ ./santa-faa.nix ];
+
   system.activationScripts.postActivation.text = ''
     # santa 설치 및 업그레이드
     if [[ "$(${installedVersion "Santa"})" != "${pkgs.santa-pkg.version}" ]]; then

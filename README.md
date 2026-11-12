@@ -36,5 +36,10 @@ macos 초기화 후 실행:
   ...
   wg-quick up vpn_infra
   ```
+- santa: `open /etc/santa/santa.mobileconfig` 후 시스템 설정 > 일반 > 기기 관리에서 설치하면 됨. `santactl status` 의 Watch Items 가 Enabled 이면 정상.
+
+## TODO
+
+- 현재 /**/bin/ 에 직접 설치하는 도구들이 몇몇 있는데, userspace에서 수정 가능한 binary 경로이므로 nix로 다 바꿀 것. 그리고 나서 `darwin/santa-faa.nix` 에 일괄 추가할 것.
 
 참고: santa, lulu 등 nix로 설치되지 않은 항목들은 nix에서 삭제해도 완전히 삭제되지 않으므로 pkg가 제공하는 uninstall 가이드를 따라야 함.
