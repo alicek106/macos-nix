@@ -1,4 +1,4 @@
-{ inputs, username, hostname, ... }:
+{ lib, inputs, username, hostname, ... }:
 
 {
   imports = [
@@ -6,7 +6,9 @@
     inputs.nix-index-database.darwinModules.nix-index
     ./packages.nix
     ./defaults.nix
-  ];
+  ]
+  # Santa, LuLu 는 일단 맥북에서만 우선 써보고 괜찮으면 맥스튜디오에도 적용할 예정
+  ++ lib.optional (hostname == "alicek106-m4") ./security.nix;
 
   # nix 데몬과 nix.conf 는 Determinate Nix가 관리하므로 nix-darwin에서는 비활성화
   nix.enable = false;

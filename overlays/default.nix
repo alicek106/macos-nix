@@ -10,4 +10,15 @@ inputs: final: prev: {
   kubectl-sniff = final.callPackage ../pkgs/kubectl-sniff.nix {
     src = inputs.ksniff;
   };
+
+  santa-pkg = final.callPackage ../pkgs/santa.nix { };
+
+  # NOTE: unstable의 lulu 버전이 4.5.7 이상으로 올라가면 이 override는 삭제해도 됨.
+  lulu = final.unstable.lulu.overrideAttrs (finalAttrs: _: {
+    version = "4.5.7";
+    src = final.fetchurl {
+      url = "https://github.com/objective-see/LuLu/releases/download/v${finalAttrs.version}/LuLu_${finalAttrs.version}.dmg";
+      hash = "sha256-jWDzK2lyZIqrkgPy9ovTqATi4Fwj1gIA1eCT1r2wbow=";
+    };
+  });
 }

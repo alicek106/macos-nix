@@ -36,3 +36,5 @@ macos 초기화 후 실행:
   ...
   wg-quick up vpn_infra
   ```
+
+참고: santa, lulu 등 nix로 설치되지 않은 항목들은 nix에서 삭제해도 완전히 삭제되지 않으므로 pkg가 제공하는 uninstall 가이드를 따라야 함.
