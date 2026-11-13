@@ -35,7 +35,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true; # home.packages 를 /etc/profiles/per-user/<username> 에 설치하는 설정
-    users.${username} = import ../home;
+    users.${username}.imports = [ ../home ] ++ lib.optional (hostname == "alicek106-m4") ../home/external-drive.nix;
   };
 
   # 처음 설치한 시점의 nix-darwin 버전 값. 웬만하면 변경하지 말것.

@@ -37,7 +37,7 @@ macos 초기화 후 실행:
   wg-quick up vpn_infra
   ```
 - santa: `open /etc/santa/santa.mobileconfig` 후 시스템 설정 > 일반 > 기기 관리에서 설치하면 됨. `santactl status` 의 Watch Items 가 Enabled 이면 정상.
-- awsctx를 `~/github/awsctx` 에 clone
+- awsctx를 `~/.awsctx` 에 clone 한 뒤 `./install.sh profiles` 실행
 - vscode에서 `"update.mode": "none"` 설정 (`/Applications/Nix Apps` 이 root own이라 자동 업데이트는 실패함..)
 - Enpass, CLIP STUDIO, OpenVPN Connect, Remote Desktop Manager, Wacom driver, Chrome
 - kc2aws, pantry (nix 관리 불가능함)

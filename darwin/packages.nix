@@ -116,14 +116,13 @@ let
     unstable.keepingyouawake
     slack
     libreoffice-bin
-    joplin-desktop
     maccy
     stats
     ice-bar
     rectangle
     dbeaver-bin
     discord
-    unstable.raycast
+    raycast # 버전은 overlays/default.nix 에서 지정
     vlc-bin
     unstable.p4v
     prismlauncher
