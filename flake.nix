@@ -26,6 +26,11 @@
       url = "github:alicek106/ksniff";
       flake = false;
     };
+
+    keycloak2aws = {
+      url = "git+ssh://git@github.com/devsisters/keycloak2aws";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ nixpkgs, nix-darwin, ... }:

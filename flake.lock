@@ -1,5 +1,26 @@
 {
   "nodes": {
+    "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": [
+          "keycloak2aws",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1778716662,
+        "narHash": "sha256-m1Yf0wZ8j1OHjTc2UwHwyQRSnNeSgLJOd7q5Y45hzi4=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "f7c1a2d347e4c52d5fb8d10cb4d94b5884e546fb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -19,6 +40,27 @@
         "ref": "release-26.05",
         "repo": "home-manager",
         "type": "github"
+      }
+    },
+    "keycloak2aws": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783564758,
+        "narHash": "sha256-HoSG+se605G5SqVCrkgxZN18h5cAyV0JTxgXduTR3Ug=",
+        "ref": "refs/heads/main",
+        "rev": "bb48fa9250dd63948859578ba82d987d8d3255a2",
+        "revCount": 11,
+        "type": "git",
+        "url": "ssh://git@github.com/devsisters/keycloak2aws"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/devsisters/keycloak2aws"
       }
     },
     "ksniff": {
@@ -113,6 +155,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "keycloak2aws": "keycloak2aws",
         "ksniff": "ksniff",
         "nix-darwin": "nix-darwin",
         "nix-index-database": "nix-index-database",

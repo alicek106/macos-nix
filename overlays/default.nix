@@ -21,14 +21,4 @@ inputs: final: prev: {
       hash = "sha256-jWDzK2lyZIqrkgPy9ovTqATi4Fwj1gIA1eCT1r2wbow=";
     };
   });
-
-  # NOTE: macOS 26 으로 업그레이드하면 unstable.raycast로 바꿀것
-  raycast = prev.raycast.overrideAttrs (finalAttrs: _: {
-    version = "1.104.36";
-    src = final.fetchurl {
-      name = "Raycast.dmg";
-      url = "https://releases.raycast.com/releases/${finalAttrs.version}/download?build=arm";
-      hash = "sha256-pOVaB5jS4GNWWrsuV8e1CqnGsgHteqn7LfdV6e+AYX0=";
-    };
-  });
 }

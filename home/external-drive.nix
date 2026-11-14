@@ -6,9 +6,12 @@ let
   projectDirs = [ "github" "working" ];
 in
 {
-  home.file = lib.genAttrs projectDirs (dir: {
-    source = config.lib.file.mkOutOfStoreSymlink "${work}/${dir}";
-  });
+  home.file = lib.genAttrs projectDirs
+    (dir: {
+      source = config.lib.file.mkOutOfStoreSymlink "${work}/${dir}";
+    }) // {
+    ".claude".source = config.lib.file.mkOutOfStoreSymlink "${work}/claude";
+  };
 
   programs.zsh.sessionVariables = {
     TF_PLUGIN_CACHE_DIR = lib.mkForce "${work}/cache/terraform-plugins";
@@ -21,7 +24,7 @@ in
 
   home.activation.externalDriveDirs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     if [[ -d ${work} ]]; then
-      run mkdir -p ${lib.concatMapStringsSep " " (dir: "${work}/${dir}") projectDirs} ${work}/cache/terraform-plugins
+      run mkdir -p ${lib.concatMapStringsSep " " (dir: "${work}/${dir}") projectDirs} ${work}/cache/terraform-plugins ${work}/claude
     fi
   '';
 

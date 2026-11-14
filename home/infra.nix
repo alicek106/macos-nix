@@ -1,8 +1,8 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   home.packages = [
-    (pkgs.writeScriptBin "aws-login-all" (builtins.readFile ./bin/aws-login-all))
+    inputs.keycloak2aws.packages.${pkgs.stdenv.hostPlatform.system}.kc2aws
   ];
 
   home.sessionPath = [ "$HOME/.tfswitch" ];

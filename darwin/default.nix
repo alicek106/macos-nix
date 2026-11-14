@@ -35,6 +35,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true; # home.packages 를 /etc/profiles/per-user/<username> 에 설치하는 설정
+    extraSpecialArgs = { inherit inputs; };
     users.${username}.imports = [ ../home ] ++ lib.optional (hostname == "alicek106-m4") ../home/external-drive.nix;
   };
 
