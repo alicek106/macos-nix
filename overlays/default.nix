@@ -21,4 +21,14 @@ inputs: final: prev: {
       hash = "sha256-jWDzK2lyZIqrkgPy9ovTqATi4Fwj1gIA1eCT1r2wbow=";
     };
   });
+
+  # NOTE: unstable의 thaw 버전이 2.1.0 이상으로 올라가면 이 override는 삭제해도 됨.
+  # nixpkgs 는 아직 이전 레포(stonerl/Thaw)의 1.2.0 을 가리키므로, 현재 레포(thaw-app/Thaw)의 릴리스를 받도록 교체함.
+  thaw = final.unstable.thaw.overrideAttrs (finalAttrs: _: {
+    version = "2.1.0";
+    src = final.fetchurl {
+      url = "https://github.com/thaw-app/Thaw/releases/download/${finalAttrs.version}/Thaw_${finalAttrs.version}.zip";
+      hash = "sha256-I/6FDda24/girwCi2nbG1GE1wvqKDe746PoJ0e/T7sE=";
+    };
+  });
 }

@@ -119,6 +119,7 @@ let
     maccy
     stats
     ice-bar
+    thaw # overlays/default.nix 에서 2.1.0 으로 override
     rectangle
     dbeaver-bin
     discord
