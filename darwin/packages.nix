@@ -122,7 +122,6 @@ let
     rectangle
     dbeaver-bin
     discord
-    unstable.raycast
     vlc-bin
     unstable.p4v
     prismlauncher
