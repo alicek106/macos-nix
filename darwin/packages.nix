@@ -118,7 +118,7 @@ let
     libreoffice-bin
     maccy
     stats
-    ice-bar
+    thaw
     rectangle
     dbeaver-bin
     discord

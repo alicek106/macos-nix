@@ -13,12 +13,19 @@ inputs: final: prev: {
 
   santa-pkg = final.callPackage ../pkgs/santa.nix { };
 
-  # NOTE: unstable의 lulu 버전이 4.5.7 이상으로 올라가면 이 override는 삭제해도 됨.
   lulu = final.unstable.lulu.overrideAttrs (finalAttrs: _: {
     version = "4.5.7";
     src = final.fetchurl {
       url = "https://github.com/objective-see/LuLu/releases/download/v${finalAttrs.version}/LuLu_${finalAttrs.version}.dmg";
       hash = "sha256-jWDzK2lyZIqrkgPy9ovTqATi4Fwj1gIA1eCT1r2wbow=";
+    };
+  });
+
+  thaw = final.unstable.thaw.overrideAttrs (finalAttrs: _: {
+    version = "2.1.0";
+    src = final.fetchurl {
+      url = "https://github.com/thaw-app/Thaw/releases/download/${finalAttrs.version}/Thaw_${finalAttrs.version}.zip";
+      hash = "sha256-I/6FDda24/girwCi2nbG1GE1wvqKDe746PoJ0e/T7sE=";
     };
   });
 }
