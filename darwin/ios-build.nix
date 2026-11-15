@@ -25,7 +25,7 @@ lib.mkIf (hostname == "alicek106-m1") {
     text = ''
       PasswordAuthentication no
       KbdInteractiveAuthentication no
-      AllowUsers ${username}@100.64.0.1/32
+      AllowUsers ${username}@100.64.0.7/32
     '';
 
     # 원래 손으로 만들었던 파일에 대한 해시값. 지금 한 번만 쓰이고 쓰이지 않는다.
